@@ -16,7 +16,7 @@ function Login() {
       password: data.password,
     };
     await axios
-      .post("https://book-stores-m2tz.onrender.com", userInfo)
+    .post("https://book-stores-m2tz.onrender.com/user/login", userInfo) // Update the endpoint to match your backend route
       .then((res) => {
         console.log(res.data);
         if (res.data) {
