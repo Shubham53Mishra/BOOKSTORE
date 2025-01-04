@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from 'url';
 
 import bookRoute from "./route/book.route.js";
 import userRoute from "./route/user.route.js";
@@ -27,11 +28,17 @@ app.use("/book", bookRoute);
 app.use("/user", userRoute);
 
 // Serve static files from the React app
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, '../Frontend/dist')));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const frontendPath = path.join(__dirname, '../Frontend/dist');
+
+app.use(express.static(frontendPath));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../Frontend/dist/index.html'));
+    res.sendFile(path.join(frontendPath, 'index.html'), (err) => {
+        if (err) {
+            res.status(404).send('Frontend files not found');
+        }
+    });
 });
 
 app.listen(PORT, () => {
