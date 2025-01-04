@@ -18,6 +18,11 @@ dotenv.config();
 const PORT = process.env.PORT || 4000;
 const URI = process.env.MONGODB_URI;
 
+if (!URI) {
+    console.error("Error: MONGODB_URI environment variable is not set.");
+    process.exit(1);
+}
+
 // connect to mongoDB
 mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to mongoDB"))
